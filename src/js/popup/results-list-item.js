@@ -100,6 +100,7 @@ export default class ResultsListItem extends React.Component {
 			"results-list-item",
 			mode,
 			isSelected ? "selected" : "",
+			item.isCurrentTab ? "current-tab" : "",
 			unsuspendURL ? "suspended" : "",
 			incognito ? "incognito" :
 				(otherWindow ? "other-window" : ""),

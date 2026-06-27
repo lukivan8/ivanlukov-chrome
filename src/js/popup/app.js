@@ -24,7 +24,7 @@ import _ from "lodash";
 
 const MinScore = .04;
 const NearlyZeroScore = .02;
-const MaxItems = 10;
+const MaxItems = 7;
 const MinItems = 4;
 const MinScoreDiff = .1;
 const BookmarksQuery = "/b ";
@@ -58,6 +58,11 @@ function sortRecents(
 	a,
 	b)
 {
+		// keep the current tab visible as context at the top of the list
+	if (a.isCurrentTab || b.isCurrentTab) {
+		return a.isCurrentTab ? -1 : 1;
+	}
+
 		// sort open tabs before closed ones, and newer before old
 	if ((a.sessionId && b.sessionId) || (!a.sessionId && !b.sessionId)) {
 		return b.lastVisit - a.lastVisit;
@@ -66,6 +71,24 @@ function sortRecents(
 	} else {
 		return -1;
 	}
+}
+
+function getDefaultSelectedIndex(
+	items,
+	shouldSelect)
+{
+	if (!shouldSelect) {
+		return -1;
+	}
+
+		// The current tab is shown as row 0 for context, but opening the popup
+		// should land on the next actionable tab. The user can still reach row 0
+		// by moving backward/up.
+	if (items[0]?.isCurrentTab) {
+		return items.length > 1 ? 1 : -1;
+	}
+
+	return 0;
 }
 
 
@@ -346,8 +369,9 @@ export default class App extends React.Component {
 				// this.settings.  an ugly side effect, but easier than
 				// passing the settings along down the chain.
 			const recentsFilter = this.settings[k.CurrentWindowLimitRecents.Key]
-				? ({lastVisit, windowId}) => lastVisit && windowId === currentWindowID
-				: ({lastVisit, windowId}) => lastVisit;
+				? ({isCurrentTab, lastVisit, windowId}) =>
+					isCurrentTab || (lastVisit && windowId === currentWindowID)
+				: ({isCurrentTab, lastVisit}) => isCurrentTab || lastVisit;
 
 				// include only recent and closed tabs that have a last
 				// visit time.  this may also filter out tabs that aren't
@@ -430,12 +454,14 @@ export default class App extends React.Component {
 	setQuery(
 		query)
 	{
+		const matchingItems = this.getMatchingItems(query);
+		const shouldSelect = query ||
+			(this.props.isPopup && (!this.openedForSearch || this.navigatingRecents));
+
 		this.setState({
 			query,
-			matchingItems: this.getMatchingItems(query),
-			selected: (query || (this.props.isPopup && (!this.openedForSearch || this.navigatingRecents)))
-				? 0
-				: -1
+			matchingItems,
+			selected: getDefaultSelectedIndex(matchingItems, shouldSelect)
 		});
 	}
 
@@ -798,8 +824,27 @@ export default class App extends React.Component {
 		return new Promise(resolve => {
 				// get the current state before calculating the index so we have
 				// the latest items count
-			this.setState(({matchingItems: {length}}) => {
-				if (mruKey) {
+			this.setState(({matchingItems, selected}) => {
+				const {length} = matchingItems;
+				const hasCurrentTabHeader = matchingItems[0]?.isCurrentTab && length > 1;
+
+				if (hasCurrentTabHeader) {
+						// Row 0 is the current tab. Don't select it by default, but do
+						// include it in keyboard wraparound: last -> current -> first,
+						// and first -> current -> last in the opposite direction.
+					if (selected === -1 && index === 0) {
+						index = 1;
+					} else if (index >= length) {
+						index = 0;
+					} else if (index < 0) {
+						index = length - 1;
+					}
+
+					if (mruKey) {
+						this.gotModifierUp = false;
+						this.gotMRUKey = true;
+					}
+				} else if (mruKey) {
 						// let the selected value go to -1 when using the MRU key to
 						// navigate up, and don't wrap at the end of the list
 					index = Math.min(Math.max(-1, index), length - 1);

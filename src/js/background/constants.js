@@ -29,10 +29,10 @@ export const IncognitoPermission = IsFirefox
 export const Homepage = "https://fwextensions.github.io/QuicKey/";
 export const MinTabDwellTime = 1250;
 export const PopupURL = chrome.runtime.getURL("popup.html");
-export const PopupInnerWidth = 500;
-export const PopupInnerHeight = 488;
-export const PopupPadding = 50;
-export const ResultsListRowHeight = 45;
+export const PopupInnerWidth = 680;
+export const PopupInnerHeight = 540;
+export const PopupPadding = 56;
+export const ResultsListRowHeight = 62;
 export const CommandIDs = {
 	OpenMenuCommand: "_execute_action",
 	OpenPopupCommand: "010-open-popup-window",

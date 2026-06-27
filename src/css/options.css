@@ -889,3 +889,189 @@ label b, .label b {
 	margin-top: .25em;
 	cursor: pointer;
 }
+
+/* ===========================================================================
+	macOS native redesign
+   =========================================================================== */
+
+:root {
+	--page-bg: #f5f5f7;
+	--card-bg: rgba(255, 255, 255, 0.78);
+	--card-border: rgba(60, 60, 67, 0.12);
+	--text-primary: #1d1d1f;
+	--text-secondary: rgba(60, 60, 67, 0.68);
+	--accent: #007aff;
+	--soft-fill: rgba(118, 118, 128, 0.12);
+	--soft-fill-hover: rgba(118, 118, 128, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--page-bg: #1c1c1e;
+		--card-bg: rgba(44, 44, 46, 0.76);
+		--card-border: rgba(235, 235, 245, 0.12);
+		--text-primary: rgba(255, 255, 255, 0.92);
+		--text-secondary: rgba(235, 235, 245, 0.62);
+		--accent: #0a84ff;
+		--soft-fill: rgba(120, 120, 128, 0.24);
+		--soft-fill-hover: rgba(120, 120, 128, 0.32);
+	}
+}
+
+body {
+	background:
+		radial-gradient(circle at 22% 0, color-mix(in srgb, var(--accent) 14%, transparent), transparent 32rem),
+		var(--page-bg) !important;
+	color: var(--text-primary) !important;
+	padding: 5em 0 7em;
+	letter-spacing: -0.012em;
+}
+
+main {
+	width: min(58em, calc(100vw - 4em));
+}
+
+h1 {
+	font-size: 2.4em;
+	font-weight: 720;
+	letter-spacing: -0.04em;
+	color: var(--text-primary) !important;
+	margin-bottom: 1.2em;
+}
+
+h1.quickey::before {
+	left: -88px;
+	top: -28px;
+	width: 72px;
+	height: 72px;
+	filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.16));
+}
+
+h2 {
+	font-size: 1.15em;
+	font-weight: 650;
+	line-height: 1.35;
+	color: var(--text-primary) !important;
+	border-bottom: 0;
+	margin: 2.3em 0 1em;
+}
+
+p,
+.control .subtitle,
+.pro,
+.con {
+	color: var(--text-secondary) !important;
+}
+
+.sections-container {
+	grid-template-columns: 14em minmax(0, 1fr);
+	grid-column-gap: 2em;
+}
+
+.section-list {
+	font-size: 1em;
+	margin-left: 0;
+	top: 2em;
+	padding: .45em;
+	background: var(--card-bg);
+	border: 1px solid var(--card-border);
+	border-radius: 18px;
+	box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+	-webkit-backdrop-filter: saturate(180%) blur(24px);
+	backdrop-filter: saturate(180%) blur(24px);
+}
+
+.section-label {
+	line-height: 1.25;
+	padding: .75em .9em;
+	border-radius: 12px;
+	color: var(--text-secondary) !important;
+}
+
+.section-label:hover,
+.section-label.selected {
+	background: var(--soft-fill) !important;
+	color: var(--text-primary) !important;
+}
+
+.section-label.selected {
+	font-weight: 650;
+}
+
+.section {
+	padding: 1.2em 1.4em;
+	background: var(--card-bg);
+	border: 1px solid var(--card-border);
+	border-radius: 24px;
+	box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+	-webkit-backdrop-filter: saturate(180%) blur(24px);
+	backdrop-filter: saturate(180%) blur(24px);
+}
+
+.control-group {
+	margin: 1.15em 0 2.1em;
+}
+
+.control {
+	margin-bottom: .8em;
+}
+
+.control label {
+	line-height: 1.45em;
+	padding-left: 2em;
+}
+
+.control .indicator {
+	top: .05em;
+	height: 1.35em;
+	width: 1.35em;
+	border-radius: .42em;
+	background: var(--soft-fill) !important;
+}
+
+.control label:hover input:not(:disabled) ~ .indicator {
+	background: var(--soft-fill-hover) !important;
+}
+
+.control input:checked ~ .indicator,
+.control input:checked:focus ~ .indicator,
+.control label:hover input:not(:disabled):checked ~ .indicator {
+	background: var(--accent) !important;
+}
+
+.shortcut-display,
+.update-message {
+	background: var(--soft-fill) !important;
+	border: 1px solid var(--card-border);
+	border-radius: 16px;
+}
+
+.shortcut-display:hover,
+.shortcut-display:focus,
+.control.current-popup-option {
+	background: var(--soft-fill-hover) !important;
+}
+
+.shortcut-display:focus {
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+kbd,
+button {
+	color: var(--text-primary) !important;
+	background: var(--card-bg) !important;
+	border: 1px solid var(--card-border);
+	border-radius: 8px;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset, 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.help-button,
+.clear-button:hover {
+	background: var(--soft-fill-hover) !important;
+	color: var(--text-primary) !important;
+}
+
+.update-message {
+	margin: -2em 0 2.5em;
+	padding: 1.5em 2em;
+}

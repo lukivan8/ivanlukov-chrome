@@ -1,13 +1,13 @@
 import React from "react";
 import {List} from "react-virtualized/dist/es/List";
 import handleRef from "@/lib/handle-ref";
-import {IsFirefox, ResultsListRowHeight} from "@/background/constants";
+import {IsFirefox, PopupInnerWidth, ResultsListRowHeight} from "@/background/constants";
 
 
-	// in FF, the scrollbar appears inside the right edge of the scrolling
-	// area, instead on the outside.  so make the virtual list go right to
-	// the edge of the popup, so the scrollbar doesn't cover the content.
-const Width = IsFirefox ? 495 : 490;
+	// Keep the virtual list aligned with the CSS shell padding. In FF, the
+	// scrollbar appears inside the right edge of the scrolling area, so give it
+	// a little extra room to avoid covering the content.
+const Width = PopupInnerWidth - (IsFirefox ? 16 : 20);
 const MinShownTime = 200;
 
 
@@ -96,6 +96,12 @@ export default class ResultsList extends React.Component {
 	handleItemHovered = (
 		index) =>
 	{
+			// Row 0 can be the current-tab context row. Keep it from becoming
+			// selected through incidental hover; keyboard backward/up still reaches it.
+		if (index === 0 && this.props.items[0]?.isCurrentTab) {
+			return;
+		}
+
 		if (this.hoverSelectEnabled && index !== this.props.selectedIndex) {
 				// pass true so the app treats a mouse selection like one
 				// made by the MRU key, so that the user can press the menu

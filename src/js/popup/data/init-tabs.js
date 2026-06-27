@@ -1,6 +1,5 @@
 import decode from "@/lib/decode";
 import {addPinyin} from "./add-pinyin";
-import _ from "lodash";
 
 
 const TitlePattern = /ttl=([^&]+)/;
@@ -81,6 +80,7 @@ export default async function initTabs(
 
 			tabs.forEach(tab => {
 				addRecentBoost(tab);
+				tab.isCurrentTab = activeTab && tab.id === activeTab.id;
 
 					// don't treat closed tabs as being in other windows
 				tab.otherWindow = markTabs &&
@@ -108,15 +108,6 @@ export default async function initTabs(
 
 				indexDuplicateTitles(tab);
 			});
-
-			if (activeTab) {
-					// remove the active tab from the array so it doesn't show
-					// up in the results, making it clearer if you have duplicate
-					// tabs open.  but do this after processing all the tabs, so
-					// that if the current tab has the same title as another one,
-					// the indexes displayed for the other tabs will be correct.
-				_.remove(tabs, { id: activeTab.id });
-			}
 
 				// make sure this index of tabs gets GC'd
 			tabsByTitle = null;

@@ -509,3 +509,529 @@ img {
 	scrollbar-width: thin;
 	scrollbar-color: var(--background, rgba(0, 0, 0, 0.15)) none;
 }
+
+/* ===========================================================================
+	macOS native redesign
+   =========================================================================== */
+
+:root {
+	--popup-width: 560px;
+	--popup-pad: 6px;
+	--surface: rgba(248, 248, 250, 0.94);
+	--surface-elevated: rgba(255, 255, 255, 0.72);
+	--surface-selected: rgba(0, 122, 255, 0.13);
+	--surface-selected-hover: rgba(0, 122, 255, 0.18);
+	--separator: rgba(60, 60, 67, 0.14);
+	--text-primary: #1d1d1f;
+	--text-secondary: rgba(60, 60, 67, 0.66);
+	--accent: #007aff;
+	--accent-strong: #0057d9;
+	--control-fill: rgba(118, 118, 128, 0.12);
+	--control-fill-hover: rgba(118, 118, 128, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--surface: rgba(30, 30, 32, 0.96);
+		--surface-elevated: rgba(44, 44, 46, 0.72);
+		--surface-selected: rgba(10, 132, 255, 0.22);
+		--surface-selected-hover: rgba(10, 132, 255, 0.28);
+		--separator: rgba(235, 235, 245, 0.13);
+		--text-primary: rgba(255, 255, 255, 0.92);
+		--text-secondary: rgba(235, 235, 245, 0.60);
+		--accent: #0a84ff;
+		--accent-strong: #5eb0ff;
+		--control-fill: rgba(120, 120, 128, 0.24);
+		--control-fill-hover: rgba(120, 120, 128, 0.32);
+	}
+}
+
+html, body {
+	width: var(--popup-width);
+}
+
+body {
+	background:
+		radial-gradient(circle at 14% -20%, rgba(0, 122, 255, 0.12), transparent 34%),
+		var(--surface) !important;
+	color: var(--text-primary) !important;
+	font-size: 14px;
+	letter-spacing: -0.01em;
+}
+
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	-webkit-backdrop-filter: saturate(180%) blur(22px);
+	backdrop-filter: saturate(180%) blur(22px);
+	z-index: -1;
+}
+
+.search-box {
+	margin: 10px 10px 8px;
+}
+
+.search-box input,
+.command-placeholder {
+	width: 100%;
+	height: 44px;
+	margin: 0;
+	padding: 0 44px 1px 44px;
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 44px;
+	color: var(--text-primary) !important;
+	background: var(--surface-elevated);
+	border: 1px solid var(--separator);
+	border-radius: 14px;
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.55) inset,
+		0 10px 30px rgba(0, 0, 0, 0.06);
+	transition: border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+.search-box input:focus {
+	border-color: color-mix(in srgb, var(--accent) 54%, transparent);
+	box-shadow:
+		0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent),
+		0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.search-box .search.icon {
+	top: 14px;
+	left: 16px;
+	width: 16px;
+	height: 16px;
+	fill: var(--text-secondary) !important;
+}
+
+.search-box input::-webkit-input-placeholder,
+.search-box input::placeholder,
+.command-placeholder {
+	font-style: normal;
+	font-weight: 400;
+	color: var(--text-secondary) !important;
+}
+
+.command-placeholder {
+	border-color: transparent;
+	box-shadow: none;
+	background: transparent;
+}
+
+.options-button {
+	top: 20px;
+	right: 18px;
+	width: 24px;
+	height: 24px;
+	padding: 4px;
+	background-color: transparent;
+	border-radius: 50%;
+}
+
+.options-button:hover,
+.firefox .search-box .cancel-button:hover,
+.search-box input::-webkit-search-cancel-button:hover,
+.results-list-item.selected:hover .close-button:hover {
+	background-color: var(--control-fill-hover) !important;
+}
+
+.options.icon,
+.search.icon,
+.clear.icon {
+	fill: var(--text-secondary) !important;
+}
+
+.results-list-container {
+	padding: 0 var(--popup-pad) 8px;
+}
+
+.results-list {
+	border-radius: 13px;
+	overflow: hidden !important;
+}
+
+.results-list-item {
+	max-width: none;
+	padding: 8px 44px 8px 48px;
+	background-position: 18px 12px;
+	background-size: 20px 20px;
+	border-radius: 12px;
+	transition: background-color .12s ease, transform .12s ease;
+}
+
+.results-list-item.selected {
+	background-color: var(--surface-selected) !important;
+}
+
+.results-list-item.selected:hover {
+	background-color: var(--surface-selected-hover) !important;
+	padding-right: 48px;
+}
+
+.results-list-item .favicon,
+.results-list-item .badge {
+	left: 18px;
+	top: 12px;
+	width: 20px;
+	height: 20px;
+	background-size: 20px 20px;
+	border-radius: 5px;
+}
+
+.results-list-item .badge {
+	top: 33px;
+	width: 16px;
+	height: 16px;
+	background-size: 16px 16px;
+}
+
+.results-list-item div.title,
+.results-list-item div.url {
+	height: 20px;
+	line-height: 20px;
+}
+
+.results-list-item div.title {
+	font-size: 14px;
+	font-weight: 540;
+	color: var(--text-primary);
+}
+
+.results-list-item div.url {
+	font-size: 12px;
+	color: var(--text-secondary);
+	opacity: 1;
+}
+
+.results-list-item div b,
+.search-box input {
+	color: var(--accent-strong) !important;
+}
+
+.results-list-item div.title-index {
+	top: -0.05em;
+	min-width: 1.65em;
+	height: 1.65em;
+	padding: .12em .45em 0;
+	margin-right: .55em;
+	font-size: .72em;
+	color: var(--text-secondary) !important;
+	background: var(--control-fill) !important;
+	border-radius: 999px;
+}
+
+.results-list-item.selected div.title-index {
+	color: var(--accent-strong) !important;
+	background: color-mix(in srgb, var(--accent) 18%, transparent) !important;
+}
+
+.results-list-item.selected:hover .close-button {
+	right: 12px;
+	width: 28px;
+	height: 28px;
+	margin-top: -14px;
+	background-color: var(--control-fill);
+}
+
+.results-list-item .close-button .clear.icon {
+	top: 6px;
+	left: 9px;
+}
+
+.results-list-item.message div.title {
+	background-position: 18px 2px;
+	padding: 0 16px 0 48px;
+	color: var(--text-secondary);
+	opacity: 1;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(120, 120, 128, 0.24) !important;
+	border: 2px solid transparent;
+	border-radius: 999px;
+	background-clip: padding-box;
+}
+
+/* ===========================================================================
+	Raycast-style monochrome refinement
+   =========================================================================== */
+
+:root {
+	--popup-width: 680px;
+	--surface: rgba(31, 31, 32, 0.96);
+	--surface-elevated: rgba(42, 42, 43, 0.96);
+	--surface-selected: rgba(255, 255, 255, 0.14);
+	--surface-selected-hover: rgba(255, 255, 255, 0.18);
+	--separator: rgba(255, 255, 255, 0.13);
+	--text-primary: rgba(255, 255, 255, 0.92);
+	--text-secondary: rgba(235, 235, 245, 0.56);
+	--accent: #ffffff;
+	--accent-strong: #ffffff;
+	--control-fill: rgba(255, 255, 255, 0.10);
+	--control-fill-hover: rgba(255, 255, 255, 0.16);
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--surface: rgba(245, 245, 247, 0.96);
+		--surface-elevated: rgba(255, 255, 255, 0.96);
+		--surface-selected: rgba(0, 0, 0, 0.085);
+		--surface-selected-hover: rgba(0, 0, 0, 0.12);
+		--separator: rgba(0, 0, 0, 0.14);
+		--text-primary: rgba(0, 0, 0, 0.88);
+		--text-secondary: rgba(60, 60, 67, 0.58);
+		--accent: #000000;
+		--accent-strong: #000000;
+		--control-fill: rgba(0, 0, 0, 0.08);
+		--control-fill-hover: rgba(0, 0, 0, 0.13);
+	}
+}
+
+body {
+	background: var(--surface) !important;
+}
+
+body::before {
+	-webkit-backdrop-filter: saturate(140%) blur(16px);
+	backdrop-filter: saturate(140%) blur(16px);
+}
+
+.search-box {
+	margin: 12px 12px 10px;
+}
+
+.search-box input,
+.command-placeholder {
+	height: 48px;
+	padding: 0 48px 1px 48px;
+	font-size: 16px;
+	line-height: 48px;
+	background: var(--surface-elevated);
+	border-radius: 16px;
+	box-shadow: none;
+}
+
+.search-box input:focus {
+	border-color: rgba(255, 255, 255, 0.28);
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+@media (prefers-color-scheme: light) {
+	.search-box input:focus {
+		border-color: rgba(0, 0, 0, 0.22);
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+	}
+}
+
+.search-box .search.icon {
+	top: 16px;
+	left: 18px;
+}
+
+.options-button {
+	top: 24px;
+	right: 22px;
+}
+
+.results-list-container {
+	padding: 0 10px 12px;
+}
+
+.results-list-item {
+	padding: 10px 52px 10px 52px;
+	background-position: 20px 14px;
+	border-radius: 14px;
+}
+
+.results-list-item .favicon,
+.results-list-item .badge {
+	left: 20px;
+	top: 15px;
+}
+
+.results-list-item .badge {
+	top: 37px;
+}
+
+.results-list-item div.title,
+.results-list-item div.url {
+	height: 21px;
+	line-height: 21px;
+}
+
+.results-list-item div.title {
+	font-size: 15px;
+	font-weight: 650;
+}
+
+.results-list-item div.url {
+	font-size: 13px;
+}
+
+.results-list-item div b,
+.search-box input {
+	color: var(--accent-strong) !important;
+}
+
+.results-list-item.selected div.title-index {
+	color: var(--text-primary) !important;
+	background: var(--control-fill-hover) !important;
+}
+
+.results-list-item.selected:hover .close-button {
+	right: 16px;
+}
+
+/* Make Raycast rows fill the widened popup instead of keeping the old compact card width. */
+.results-list,
+.results-list.ReactVirtualized__List,
+.results-list .ReactVirtualized__Grid__innerScrollContainer {
+	width: 100% !important;
+	max-width: none !important;
+}
+
+.results-list-item {
+	left: 0 !important;
+	right: 0 !important;
+	width: auto !important;
+	max-width: none !important;
+}
+
+.results-list-item.current-tab {
+	opacity: 0.72;
+}
+
+.results-list-item.current-tab::after {
+	content: "Current";
+	position: absolute;
+	top: 13px;
+	right: 18px;
+	padding: 2px 7px 3px;
+	font-size: 11px;
+	font-weight: 650;
+	line-height: 1;
+	color: var(--text-secondary);
+	background: var(--control-fill);
+	border-radius: 999px;
+}
+
+.results-list-item.current-tab.selected {
+	opacity: 1;
+}
+
+/* More translucent Raycast-style surface. Browser extension windows cannot get
+   true native macOS vibrancy, but this keeps the extension content itself less
+   solid where the browser compositor allows transparency. */
+:root {
+	--surface: rgba(31, 31, 32, 0.78);
+	--surface-elevated: rgba(42, 42, 43, 0.70);
+	--separator: rgba(255, 255, 255, 0.18);
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--surface: rgba(245, 245, 247, 0.78);
+		--surface-elevated: rgba(255, 255, 255, 0.70);
+		--separator: rgba(0, 0, 0, 0.16);
+	}
+}
+
+html {
+	background: transparent !important;
+}
+
+body {
+	background: var(--surface) !important;
+}
+
+body::before {
+	-webkit-backdrop-filter: saturate(160%) blur(28px);
+	backdrop-filter: saturate(160%) blur(28px);
+}
+
+.search-box input,
+.command-placeholder {
+	background: var(--surface-elevated) !important;
+}
+
+/* ===========================================================================
+	Chrome theme match: dark blue-gray / moonlit teal
+   =========================================================================== */
+
+:root {
+	--surface: rgba(22, 34, 41, 0.88);
+	--surface-elevated: rgba(31, 46, 55, 0.78);
+	--surface-selected: rgba(73, 130, 162, 0.26);
+	--surface-selected-hover: rgba(89, 151, 188, 0.32);
+	--separator: rgba(151, 206, 235, 0.20);
+	--text-primary: rgba(246, 250, 252, 0.94);
+	--text-secondary: rgba(207, 222, 230, 0.62);
+	--accent: #8fd3ff;
+	--accent-strong: #c7eaff;
+	--control-fill: rgba(143, 211, 255, 0.10);
+	--control-fill-hover: rgba(143, 211, 255, 0.17);
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--surface: rgba(22, 34, 41, 0.88);
+		--surface-elevated: rgba(31, 46, 55, 0.78);
+		--surface-selected: rgba(73, 130, 162, 0.26);
+		--surface-selected-hover: rgba(89, 151, 188, 0.32);
+		--separator: rgba(151, 206, 235, 0.20);
+		--text-primary: rgba(246, 250, 252, 0.94);
+		--text-secondary: rgba(207, 222, 230, 0.62);
+		--accent: #8fd3ff;
+		--accent-strong: #c7eaff;
+		--control-fill: rgba(143, 211, 255, 0.10);
+		--control-fill-hover: rgba(143, 211, 255, 0.17);
+	}
+}
+
+body {
+	background:
+		radial-gradient(circle at 72% 110%, rgba(216, 194, 154, 0.10), transparent 26%),
+		radial-gradient(circle at 20% -10%, rgba(143, 211, 255, 0.10), transparent 34%),
+		linear-gradient(180deg, rgba(14, 31, 40, 0.92), rgba(35, 52, 57, 0.88)) !important;
+}
+
+.search-box input,
+.command-placeholder {
+	background: rgba(27, 39, 47, 0.82) !important;
+	border-color: rgba(143, 211, 255, 0.26);
+}
+
+.search-box input:focus {
+	border-color: rgba(143, 211, 255, 0.75);
+	box-shadow:
+		0 0 0 1px rgba(143, 211, 255, 0.22) inset,
+		0 0 0 3px rgba(143, 211, 255, 0.08);
+}
+
+.results-list-item.selected {
+	background-color: rgba(55, 92, 126, 0.62) !important;
+}
+
+.results-list-item.selected:hover {
+	background-color: rgba(64, 108, 148, 0.72) !important;
+}
+
+.results-list-item div.url,
+.search-box input::-webkit-input-placeholder,
+.search-box input::placeholder,
+.command-placeholder {
+	color: rgba(207, 222, 230, 0.64) !important;
+}
+
+.results-list-item.current-tab::after,
+.results-list-item div.title-index {
+	background: rgba(143, 211, 255, 0.12) !important;
+	color: rgba(207, 222, 230, 0.72) !important;
+}
