@@ -8,6 +8,18 @@ comments: true
 # Release history
 
 
+## 2.1.0 - 2026-08-30
+
+### Added
+
+* The current tab is now shown at the top of the recent-tabs list for context.
+
+### Changed
+
+* Redesigned the popup and options page with a larger, more spacious layout.
+* Improved keyboard navigation around the current-tab row.
+
+
 ## 2.0.2 - 2024-10-27
 
 ### Fixed

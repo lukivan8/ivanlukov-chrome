@@ -22,7 +22,29 @@ With a little extra work, you can even make *QuicKey* respond to the Holy Grail 
 
 ## Installation
 
-Install *QuicKey* from the <a href="https://chrome.google.com/webstore/detail/quickey-–-the-quick-tab-s/ldlghkoiihaelfnggonhjnfiabmaficg">Chrome Web Store</a>.
+### Установка из GitHub Release (основной способ)
+
+Для установки не нужны Git, Node.js, npm или какие-либо команды.
+
+1. Скачайте файл **QuicKey.zip** из [последнего релиза](https://github.com/lukivan8/ivanlukov-chrome/releases/latest).
+2. Распакуйте ZIP-архив в отдельную папку. Не удаляйте и не перемещайте эту папку после установки: Chrome будет запускать расширение прямо из неё.
+3. Откройте в Chrome адрес `chrome://extensions`.
+4. Включите переключатель **Режим разработчика** в правом верхнем углу.
+5. Нажмите **Загрузить распакованное расширение**.
+6. Выберите распакованную папку. Нужна именно та папка, внутри которой лежит файл `manifest.json`.
+7. Закрепите *QuicKey* на панели Chrome через кнопку с иконкой пазла.
+
+> Chrome не обновляет расширения, установленные таким способом, автоматически. Для обновления скачайте новый ZIP, замените файлы в этой же папке и нажмите кнопку **Обновить** на странице `chrome://extensions`.
+
+#### Если Chrome показывает ошибку
+
+- Не выбирайте сам ZIP-файл — сначала его нужно распаковать.
+- Если Chrome не находит `manifest.json`, выбрана не та папка. Откройте её и выберите вложенную папку, где виден `manifest.json`.
+- Если расширение не видно на панели, нажмите иконку пазла и закрепите *QuicKey*.
+
+### Chrome Web Store
+
+Оригинальную версию *QuicKey* также можно [установить из Chrome Web Store](https://chrome.google.com/webstore/detail/quickey-–-the-quick-tab-s/ldlghkoiihaelfnggonhjnfiabmaficg). Версия из магазина может отличаться от релиза в этом репозитории.
 
 Once the extension is installed, you can click the <img src="docs/img/icon-38.png" height="19"> button on the toolbar to open the search box.  But if you like this extension, you'll probably prefer using the default keyboard shortcut listed above.
 
